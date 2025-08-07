@@ -10,7 +10,7 @@ def criar_e_assinar_transacao():
     assinaturas_validas = 0
 
     for i in range(3):
-        nome = input(f"Nome do usuário que vai assinar ({i+1}/3 ou ENTER para pular): ")
+        nome = input(f"Nome do utilizador que vai assinar ({i+1}/3 ou ENTER para pular): ")
         if nome == "":
             continue
         try:
@@ -37,7 +37,7 @@ while True:
         escolha = input("Escolha uma opção: ")
 
         if escolha == "1":
-            nome = input("Nome do usuário (ex: user1): ")
+            nome = input("Nome do utilizador (ex: user1): ")
             priv, pub = gerar_chave()
             salvar_chaves(nome, priv, pub)
             print(f"✔️  Chaves salvas como {nome}_priv.key e {nome}_pub.key.")
