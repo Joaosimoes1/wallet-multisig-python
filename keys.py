@@ -1,5 +1,5 @@
 from ecdsa import SigningKey, SECP256k1
-import binascii
+import os
 
 
 def gerar_chave():
@@ -7,18 +7,18 @@ def gerar_chave():
     chave_publica = chave_privada.get_verifying_key()
     return chave_privada, chave_publica
 
-def salvar_chaves_em_hex(chave_privada, chave_publica):
-    return {
-        'privada_hex': chave_privada.to_string().hex(),
-        'publica_hex': chave_publica.to_string().hex()
-    }
+def salvar_chaves(nome, priv, pub, pasta='storage'):
+    if not os.path.exists(pasta):
+        os.makedir(storage)
 
-# Teste
-if __name__ == "__main__":
-    priv, pub = gerar_chave()
-    hex_keys = salvar_chaves_em_hex(priv, pub)
+    with open(os.path.join(pasta, f"{nome}_priv.key"), "wb") as f:
+        f.write(priv.to_string())
+    with open(os.path.join(pasta, f"{nome}_pub.key"), "wb") as f:
+        f.write(pub.to_string())
 
-    print(hex_keys)
-
-    print("Chave privada:", hex_keys['privada_hex'])
-    print("Chave pública:", hex_keys['publica_hex'])
+def carregar_chaves(nome, pasta='storage'):
+    with open(os.path.join(pasta, f"{nome}_priv.key"), "rb") as f:
+        priv = SigningKey.from_string(f.read(), curve=SECP256k1)
+    with open(os.path.join(pasta, f"{nome}_pub.key"), "rb") as f:
+        pub = VerifyingKey.from_string(f.read(), curve=SECP256k1)
+    return priv, pub
